@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>DU</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/responsive.css" rel="stylesheet" />
+  
+  <style>
+    .board-container {
+      min-height: calc(100vh - 400px);
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 1200px;
+    }
+    .board-list {
+      margin-bottom: 50px;
+    }
+    .search-box {
+      text-align: right;
+      margin: 20px 0;
+    }
+    .search-box input {
+      padding: 5px;
+      width: 200px;
+    }
+    .search-box button {
+      padding: 5px 10px;
+      margin-left: 5px;
+      background-color: #337ab7;
+      color: white;
+      border: none;
+    }
+    .board-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    .board-table th, .board-table td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    .board-table th {
+      background-color: #f8f9fa;
+      border-top: 2px solid #000;
+    }
+    .pagination {
+      text-align: center;
+      margin: 30px 0;
+      clear: both;
+    }
+    .pagination a {
+      padding: 5px 10px;
+      margin: 0 5px;
+      text-decoration: none;
+      color: #333;
+    }
+    .pagination a.active {
+      background-color: #337ab7;
+      color: white;
+    }
+    .write-btn {
+      float: right;
+      padding: 8px 20px;
+      background-color: #337ab7;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: black;
+    }
+    .info_section {
+      margin-top: 50px;
+      clear: both;
+    }
+    .footer_section {
+      margin-top: 30px;
+      padding: 20px 0;
+    }
+  </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index.html">
+            <img src="images/로고.jpg" alt="" />
+            <span>
+              DU
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  ">
+              <li class="nav-item active">
+                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html"> About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="category.html"> Category </a>
+              </li>
+            </ul>
+            <div class="user_option">
+              <a href="loginandsignup.html">
+                <span>
+                  Login
+                </span>
+              </a>
+              <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
+              </form>
+            </div>
+          </div>
+          <div>
+            <div class="custom_menu-btn ">
+              <button>
+                <span class=" s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </header>
+  </div>
+
+  <div class="board-container">
+    <h1>중고 거래 게시판</h1>
+    
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+      <button onclick="search()">검색</button>
+    </div>
+
+    <div class="board-list">
+      <table class="board-table">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>날짜</th>
+            <th>조회수</th>
+          </tr>
+        </thead>
+        <tbody id="boardList">
+        </tbody>
+      </table>
+
+      <div class="pagination" id="pagination">
+      </div>
+
+      <button class="write-btn" onclick="openWriteModal()">글쓰기</button>
+    </div>
+  </div>
+
+  <div id="writeModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>글쓰기</h2>
+      <input type="text" id="writeTitle" placeholder="제목" style="width: 100%; margin-bottom: 10px;">
+      <input type="text" id="writeAuthor" placeholder="작성자" style="width: 100%; margin-bottom: 10px;">
+      <textarea id="writeContent" placeholder="내용" style="width: 100%; height: 200px; margin-bottom: 10px;"></textarea>
+      <button onclick="submitPost()" style="float: right;">등록</button>
+    </div>
+  </div>
+
+  <section class="info_section ">
+  <div class="info_container layout_padding-top">
+    <div class="container">
+      <div class="info_top">
+        <div class="info_logo">
+          <img src="images/로고.jpg" alt="" />
+          <span>
+            DU
+          </span>
+        </div>
+        <div class="social_box">
+          <a href="#">
+            <img src="images/fb.png" alt="">
+          </a>
+          <a href="#">
+            <img src="images/twitter.png" alt="">
+          </a>
+          <a href="#">
+            <img src="images/instagram.png" alt="">
+          </a>
+          <a href="#">
+            <img src="images/youtube.png" alt="">
+          </a>
+        </div>
+      </div>
+
+      <div class="info_main">
+        <div class="row">
+          <div class="col-md-3 col-lg-2">
+            <div class="info_link-box">
+              <h5>
+                Useful Link
+              </h5>
+              <ul>
+                <li class=" active">
+                  <a class="" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="">
+                  <a class="" href="about.html">About </a>
+                </li>
+                <li class="">
+                  <a class="" href="category.html">Category </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-lg-2 offset-lg-1">
+            <h5>
+              Information
+            </h5>
+            <p>
+              대구대학교 학생들이 학업, 생활 및 경제적인 문제에 대한 필수 정보를 얻을 수 있습니다.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-9 col-md-10 mx-auto">
+          <div class="info_contact layout_padding2">
+            <div class="row">
+              <div class="col-md-3">
+                <a href="#" class="link-box">
+                  <div class="img-box">
+                    <img src="images/location.png" alt="">
+                  </div>
+                  <div class="detail-box">
+                    <h6>
+                      (38453) 경상북도 경산시 진량읍 대구대로 201 
+                    </h6>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-5">
+                <a href="#" class="link-box">
+                  <div class="img-box">
+                    <img src="images/call.png" alt="">
+                  </div>
+                  <div class="detail-box">
+                    <h6>
+                      053-850-5000
+                    </h6>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <footer class="container-fluid footer_section">
+    <div class="container">
+      <p>&copy; <span id="displayYear"></span> All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/custom.js"></script>
+
+</body>
+</html>
+  <script>
+    let posts = [];
+    let currentPage = 1;
+    let nextId = 1;
+    const postsPerPage = 10;
+
+    function updatePagination() {
+        const totalPages = Math.ceil(posts.length / postsPerPage);
+        const paginationDiv = document.getElementById('pagination');
+        let paginationHtml = '<a href="#" onclick="changePage(\'prev\')">Previous</a>';
+        
+        for(let i = 1; i <= totalPages; i++) {
+            paginationHtml += `<a href="#" onclick="setPage(${i})" ${currentPage === i ? 'class="active"' : ''}>${i}</a>`;
+        }
+        
+        paginationHtml += '<a href="#" onclick="changePage(\'next\')">Next</a>';
+        paginationDiv.innerHTML = paginationHtml;
+    }
+
+    function displayPosts() {
+        const start = (currentPage - 1) * postsPerPage;
+        const end = start + postsPerPage;
+        const boardList = document.getElementById('boardList');
+        boardList.innerHTML = '';
+        
+        const paginatedPosts = posts.slice(start, end);
+        
+        paginatedPosts.forEach(post => {
+            const row = `
+                <tr>
+                    <td>${post.id}</td>
+                    <td onclick="viewPost(${post.id})" style="cursor: pointer;">${post.title}</td>
+                    <td>${post.author}</td>
+                    <td>${post.date}</td>
+                    <td>${post.views}</td>
+                </tr>
+            `;
+            boardList.innerHTML += row;
+        });
+        
+        updatePagination();
+    }
+
+    function changePage(direction) {
+        const totalPages = Math.ceil(posts.length / postsPerPage);
+        if(direction === 'prev' && currentPage > 1) {
+            currentPage--;
+        } else if(direction === 'next' && currentPage < totalPages) {
+            currentPage++;
+        }
+        displayPosts();
+    }
+
+    function setPage(page) {
+        currentPage = page;
+        displayPosts();
+    }
+
+    function openWriteModal() {
+        document.getElementById('writeModal').style.display = 'block';
+    }
+
+    document.getElementsByClassName('close')[0].onclick = function() {
+        document.getElementById('writeModal').style.display = 'none';
+    }
+
+    function submitPost() {
+        const title = document.getElementById('writeTitle').value;
+        const author = document.getElementById('writeAuthor').value;
+        const content = document.getElementById('writeContent').value;
+
+        if (title && author && content) {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ko-KR') + ' ' + 
+                           now.toLocaleTimeString('ko-KR', { 
+                               hour: '2-digit', 
+                               minute: '2-digit' 
+                           });
+
+            const newPost = {
+                id: nextId++,
+                title: title,
+                author: author,
+                content: content,
+                date: dateStr,
+                views: 0
+            };
+
+            posts.unshift(newPost);
+            displayPosts();
+
+            document.getElementById('writeTitle').value = '';
+            document.getElementById('writeAuthor').value = '';
+            document.getElementById('writeContent').value = '';
+            document.getElementById('writeModal').style.display = 'none';
+        } else {
+            alert('모든 필드를 입력해주세요.');
+        }
+    }
+
+    function viewPost(id) {
+        const post = posts.find(p => p.id === id);
+        if (post) {
+            post.views++;
+            alert(`제목: ${post.title}\n작성자: ${post.author}\n내용: ${post.content || '내용 없음'}`);
+            displayPosts();
+        }
+    }
+
+    function search() {
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
+        const filteredPosts = posts.filter(post => 
+            post.title.toLowerCase().includes(searchText) ||
+            post.author.toLowerCase().includes(searchText)
+        );
+        const originalPosts = [...posts];
+        posts = filteredPosts;
+        currentPage = 1;
+        displayPosts();
+        posts = originalPosts;
+    }
+
+    displayPosts();
+  </script>
+</body>
+</html>

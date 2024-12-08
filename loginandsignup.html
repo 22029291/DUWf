@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 및 회원가입</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 2px solid #ddd;
+        }
+        .tabs button {
+            background-color: #fff;
+            border: none;
+            padding: 10px;
+            width: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .tabs button.active {
+            border-bottom: 2px solid #3498db;
+        }
+        .form-content {
+            display: none;
+        }
+        .form-content.active {
+            display: block;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group {
+            text-align: center;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-group button:hover {
+            background-color: #2980b9;
+        }
+        .toggle-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .toggle-link a {
+            color: #3498db;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="tabs">
+            <button id="loginTab" class="active" onclick="toggleTab('login')">로그인</button>
+            <button id="signupTab" onclick="toggleTab('signup')">회원가입</button>
+        </div>
+
+        <!-- 로그인 폼 -->
+        <div id="loginForm" class="form-content active">
+            <div class="input-group">
+                <input type="text" id="signInEmail" placeholder="이메일" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signInPassword" placeholder="비밀번호" required>
+            </div>
+            <div class="form-group">
+                <button onclick="login()" id="signInButton">로그인</button>
+            </div>
+            <div class="toggle-link">
+                <a href="javascript:void(0)" onclick="toggleTab('signup')">회원가입이 필요하신가요?</a>
+            </div>
+        </div>
+
+        <!-- 회원가입 폼 -->
+        <div id="signupForm" class="form-content">
+            <div class="input-group">
+                <input type="text" id="signupName" placeholder="이름" required>
+            </div>
+            <div class="input-group">
+                <input type="email" id="signupEmail" placeholder="이메일" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signupPassword" placeholder="비밀번호" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signupConfirmPassword" placeholder="비밀번호 확인" required>
+            </div>
+            <div class="form-group">
+                <button onclick="signup()" id="signUpButton">회원가입</button>
+            </div>
+            <div class="toggle-link">
+                <a href="javascript:void(0)" onclick="toggleTab('login')">이미 계정이 있으신가요?</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTab(tab) {
+            // 탭을 변경하고 보여줄 폼 선택
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            
+            if (tab === 'login') {
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+            } else {
+                loginForm.classList.remove('active');
+                signupForm.classList.add('active');
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+            }
+        }
+    </script>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyDeSFfM0xd9QFNT9s6suSJGzRaHwP2JZ-Q",
+          authDomain: "easylogin-389ef.firebaseapp.com",
+          projectId: "easylogin-389ef",
+          storageBucket: "easylogin-389ef.firebasestorage.app",
+          messagingSenderId: "633053016158",
+          appId: "1:633053016158:web:686119a81db7510a8684cf",
+          measurementId: "G-8K9K18L6MW"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+        document.getElementById('signUpButton').addEventListener('click', (event) => {
+            event.preventDefault()
+            const signupEmail = document.getElementById('signupEmail').value
+            const signupPassword = document.getElementById('signupPassword').value
+            const auth = getAuth();
+            createUserWithEmailAndPassword(auth, signupEmail, signupPassword)
+            .then((userCredential) => {
+                alert("회원가입 성공")
+                const user = userCredential.user;
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert("이미 있는 아이디거나 사용할 수 없는 아이디입니다.")
+            });
+        })
+
+        document.getElementById('signInButton').addEventListener('click', (event) => {
+            event.preventDefault();
+            const signInEmail = document.getElementById('signInEmail').value
+            const signInPassword = document.getElementById('signInPassword').value
+            const auth = getAuth();
+            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+            .then((userCredential) => {
+                alert("로그인 성공")
+                window.location.href = "index.html"
+                const user = userCredential.user;
+                // ...
+            })
+            .catch((error) => {
+                alert("아이디 또는 비밀번호가 올바르지 않습니다.")
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
+        })
+        </script>
+
+</body>
+</html>

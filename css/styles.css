@@ -1,0 +1,150 @@
+/* 기본적인 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 배경 및 기본 폰트 설정 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+}
+
+/* 헤더 스타일 */
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 20px 0;
+}
+
+header .container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 2rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* 메인 컨텐츠 */
+.container {
+    width: 80%;
+    margin: 40px auto;
+}
+
+/* 게시글 목록 스타일 */
+.board-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.board-list th, .board-list td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.board-list th {
+    background-color: #f1f1f1;
+}
+
+.board-list td a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.board-list td a:hover {
+    text-decoration: underline;
+}
+
+/* 페이지네이션 */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007BFF;
+    padding: 5px 10px;
+    border: 1px solid #007BFF;
+}
+
+.pagination a:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* 글쓰기 폼 스타일 */
+.write-post {
+    margin-top: 40px;
+}
+
+.write-post form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.write-post label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.write-post input, .write-post textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.write-post button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.write-post button:hover {
+    background-color: #0056b3;
+}
+
+/* 푸터 스타일 */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 40px;
+}
